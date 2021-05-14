@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import counterContsants from './counterConstants';
+import counterContsants from '../constants/counterConstants';
+import CounterService from './../Observable/CounterService';
 
 const {
   TICKING,
