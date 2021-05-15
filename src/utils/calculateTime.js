@@ -2,6 +2,7 @@ const calculateTime = (count) => {
   const attachZero = (number) => {
     return number > 9 ? number : `0${number}`;
   };
+  
   if (count) {
     let hours = 0;
     let minutes = 0;

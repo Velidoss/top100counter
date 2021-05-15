@@ -1,10 +1,11 @@
 import React from 'react';
 import calculateTime from './../../utils/calculateTime';
+import style from '../Counter.module.css';
 
 const CountTime = ({count}) => {
 
   return (
-    <div>
+    <div className={style.counter} >
       {calculateTime(count)}
     </div>
   )

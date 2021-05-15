@@ -3,6 +3,8 @@ import counterContsants from '../constants/counterConstants';
 import { useObservable } from './../Hooks/useObservable';
 import counterService from './../state/counterService';
 import CountTime from './CountTime/CountTime';
+import style from './Counter.module.css';
+import ActionButton from './Buttons/ActionButton';
 
 const {
   TICKING,
@@ -19,7 +21,6 @@ export default function Counter() {
 
   useEffect(() => {  
     let counter;
-
     if (counterState === TICKING) {
       counter = setInterval(() => {
         counterService.tick()
@@ -38,38 +39,28 @@ export default function Counter() {
       clearInterval(counter);
       counterService.startCounter();
     }
-  }, [counterState])
+  }, [counterState]);
 
   return (
-    <div style={{
-      textAlign: 'center'
-    }}>
+    <div className={style.dataContainer}>
       <CountTime count={count} />
         { counterState === STOPPED || counterState === PAUSED 
-          ? <button onClick={counterService.startCounter}>
-              Start
-            </button>
-          : <button onClick={counterService.stopCounter}>
-              Stop
-            </button>
+          ? <ActionButton callBack={counterService.startCounter} text={'Start'} />
+          : <ActionButton callBack={counterService.stopCounter} text={'Stop'} />
         }
-        <button 
-          onClick={() => {
+        <ActionButton 
+          callBack={() => {
             if (waitTime) {
               if (Date.now() - waitTime <= 300) {
                 counterService.pauseCounter();
-              } else {
-                setWaitTime(null);
-              }
+              } 
+              setWaitTime(null);
             }
             setWaitTime(Date.now());
-          }}
-        >
-          Wait
-        </button>
-        <button onClick={counterService.resetCounter}>
-          Reset
-        </button>
+          }} 
+          text={'Wait'} 
+        />
+        <ActionButton callBack={counterService.resetCounter} text={'Reset'} />
     </div>
   )
 }

@@ -1,0 +1,26 @@
+.dataContainer {
+  text-align: center;
+}
+.counter {
+  margin-bottom: 20px;
+  font-size: 32px;
+}
+
+.button {
+  background: none;
+  border: 2px solid rgb(34, 114, 219);
+  padding: 10px 20px;
+  border-radius: 10px;
+  transition: 0.45s ease-in-out;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+.button:hover {
+  cursor: pointer;
+  background: rgba(34, 114, 219, 1);
+  color: white;
+}
+
+.button + .button {
+  margin-left: 20px;
+}
