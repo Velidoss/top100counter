@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import counterContsants from '../constants/counterConstants';
 import { useObservable } from './../Hooks/useObservable';
 import counterService from './../state/counterService';
+import CountTime from './CountTime/CountTime';
 
 const {
   TICKING,
@@ -39,24 +40,24 @@ export default function Counter() {
   }, [counterState])
 
   return (
-    <div>
-      <p>
-        {count}
-      </p>
-      { counterState === STOPPED || counterState === PAUSED 
-        ? <button onClick={counterService.startCounter}>
-            Start
-          </button>
-        : <button onClick={counterService.stopCounter}>
-            Stop
-          </button>
-      }
-      <button onDoubleClick={counterService.pauseCounter}>
-        Wait
-      </button>
-      <button onClick={counterService.resetCounter}>
-        Reset
-      </button>
+    <div style={{
+      textAlign: 'center'
+    }}>
+      <CountTime count={count} />
+        { counterState === STOPPED || counterState === PAUSED 
+          ? <button onClick={counterService.startCounter}>
+              Start
+            </button>
+          : <button onClick={counterService.stopCounter}>
+              Stop
+            </button>
+        }
+        <button onDoubleClick={counterService.pauseCounter}>
+          Wait
+        </button>
+        <button onClick={counterService.resetCounter}>
+          Reset
+        </button>
     </div>
   )
 }
