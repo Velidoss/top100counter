@@ -18,11 +18,6 @@ export default function Counter() {
   useEffect(() => {  
     let counter;
 
-    const stopCount = () => {
-      clearInterval(counter);
-      counterService.stopCounter();
-    }
-
     if (counterState === TICKING) {
       counter = setInterval(() => {
         counterService.tick()
@@ -31,15 +26,14 @@ export default function Counter() {
     }
     if (counterState === PAUSED) {
       clearInterval(counter);
-      counterService.pauseCounter();
     }
-    if (counterState === STOPPED) {      
+    if (counterState === STOPPED) {  
+      clearInterval(counter);    
       counterService.resetCount();
-      stopCount();
     }
     if (counterState === RESETTING) {    
       counterService.resetCount();
-      stopCount();
+      clearInterval(counter);
       counterService.startCounter();
     }
   }, [counterState])
