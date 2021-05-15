@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import counterContsants from '../constants/counterConstants';
-import CounterService from './../Observable/CounterService';
+import { useObservable } from './../Hooks/useObservable';
+import counterService from './../state/counterService';
 
 const {
   TICKING,
@@ -11,55 +12,37 @@ const {
 
 export default function Counter() {
 
-  const [count, setCount] = useState(0);
-  const [counterState, setCounterState] = useState(STOPPED);
+  const count = useObservable(counterService.count);
+  const counterState = useObservable(counterService.counterState);
 
   useEffect(() => {  
     let counter;
-    const tick = () => {
-      setCount((count) => count + 1);
-      console.log('tick');
-    }
 
     const stopCount = () => {
       clearInterval(counter);
+      counterService.stopCounter();
     }
 
     if (counterState === TICKING) {
       counter = setInterval(() => {
-        tick()
+        counterService.tick()
       }, 1000);
       return () => clearInterval(counter);
     }
     if (counterState === PAUSED) {
-      stopCount();
+      clearInterval(counter);
+      counterService.pauseCounter();
     }
     if (counterState === STOPPED) {      
-      setCount(0);
+      counterService.resetCount();
       stopCount();
     }
     if (counterState === RESETTING) {    
-      setCount(0);
+      counterService.resetCount();
       stopCount();
-      startCounter();
+      counterService.startCounter();
     }
   }, [counterState])
-
-  const startCounter = () => {
-    setCounterState(TICKING);
-  }
-
-  const pauseCounter = () => {
-    setCounterState(PAUSED);
-  }
-
-  const stopCounter = () => {
-    setCounterState(STOPPED);
-  }
-
-  const resetCounter = () => {
-    setCounterState(RESETTING);
-  }
 
   return (
     <div>
@@ -67,17 +50,17 @@ export default function Counter() {
         {count}
       </p>
       { counterState === STOPPED || counterState === PAUSED 
-        ? <button onClick={startCounter}>
+        ? <button onClick={counterService.startCounter}>
             Start
           </button>
-        : <button onClick={stopCounter}>
+        : <button onClick={counterService.stopCounter}>
             Stop
           </button>
       }
-      <button onDoubleClick={pauseCounter}>
+      <button onDoubleClick={counterService.pauseCounter}>
         Wait
       </button>
-      <button onClick={resetCounter}>
+      <button onClick={counterService.resetCounter}>
         Reset
       </button>
     </div>

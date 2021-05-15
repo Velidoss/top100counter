@@ -10,50 +10,43 @@ const {
 
 class CounterService {
 
-  counter = new Observable({});
+  count = new Observable(0);
+  counterState = new Observable(STOPPED);
 
-  constructor (count, counterState) {
-    this.counter.count = count;
-    this.counter.counterState = counterState;
+  constructor () {
+    this.tick = this.tick.bind(this);
+    this.resetCount = this.resetCount.bind(this);
+    this.startCounter = this.startCounter.bind(this);
+    this.pauseCounter = this.pauseCounter.bind(this);
+    this.stopCounter = this.stopCounter.bind(this);
+    this.resetCounter = this.resetCounter.bind(this);
   }
-
+    
   tick() {
-    this.counter.set({...this.counter.get(), count: this.counter.count + 1});
+    this.count.set(this.count.get() + 1);
   }
 
   resetCount() {
-    this.counter.set(0);
+    this.count.set(0);
   }
 
   startCounter () {
-    this.counter.set({
-      ...this.counter.get(), 
-      counterState: TICKING,
-    });
+    this.counterState.set(TICKING);
   }
 
   pauseCounter () {
-        this.counter.set({
-      ...this.counter.get(), 
-      counterState: PAUSED,
-    });
+    this.counterState.set(PAUSED);
   }
 
   stopCounter () {
-        this.counter.set({
-      ...this.counter.get(), 
-      counterState: STOPPED,
-    });
+    this.counterState.set(STOPPED);
   }
 
   resetCounter () {
-        this.counter.set({
-      ...this.counter.get(), 
-      counterState: RESETTING,
-    });
+    this.counterState.set(RESETTING);
   }
 
 };
 
 
-export default new CounterService({count: 0, counterState: STOPPED});
+export default CounterService;
