@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import counterContsants from '../constants/counterConstants';
 import { useObservable } from './../Hooks/useObservable';
 import counterService from './../state/counterService';
@@ -15,6 +15,7 @@ export default function Counter() {
 
   const count = useObservable(counterService.count);
   const counterState = useObservable(counterService.counterState);
+  const [waitTime, setWaitTime] = useState(null);
 
   useEffect(() => {  
     let counter;
@@ -52,7 +53,18 @@ export default function Counter() {
               Stop
             </button>
         }
-        <button onDoubleClick={counterService.pauseCounter}>
+        <button 
+          onClick={() => {
+            if (waitTime) {
+              if (Date.now() - waitTime <= 300) {
+                counterService.pauseCounter();
+              } else {
+                setWaitTime(null);
+              }
+            }
+            setWaitTime(Date.now());
+          }}
+        >
           Wait
         </button>
         <button onClick={counterService.resetCounter}>
